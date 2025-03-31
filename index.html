@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Mercadería</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .result-row {
+            margin-bottom: 15px;
+        }
+        
+        .result-label {
+            font-size: 16px;
+            color: var(--text-color);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .highlight {
+            font-size: 42px;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 5px 0;
+            line-height: 1;
+        }
+        
+        .unit {
+            font-size: 18px;
+            margin-left: 5px;
+        }
+        
+        /* Efecto para cuando aparecen resultados */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .highlight {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Mercadería</h2>
+        
+        <div class="input-group">
+            <label for="totalKilos">Peso total de la mercadería (kg):</label>
+            <input type="number" id="totalKilos" placeholder="Ejemplo: 100" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="kilosMal">Peso en mal estado (kg):</label>
+            <input type="number" id="kilosMal" placeholder="Ejemplo: 10" min="0">
+        </div>
+        
+        <button onclick="calcular()">Calcular</button>
+        
+        <div class="result" id="resultado"></div>
+    </div>
+    
+    <script>
+        function calcular() {
+            var totalKilos = parseFloat(document.getElementById("totalKilos").value) || 0;
+            var kilosMal = parseFloat(document.getElementById("kilosMal").value) || 0;
+            
+            if (kilosMal > totalKilos) {
+                alert("El peso en mal estado no puede ser mayor que el total.");
+                return;
+            }
+            
+            var kilosFinales = totalKilos - kilosMal;
+            var bolsas = Math.floor(kilosFinales / 20);
+            var saldo = kilosFinales % 20;
+            
+            document.getElementById("resultado").innerHTML = `
+                <div class="result-container">
+                    <div class="result-row">
+                        <p class="result-label">Bolsas completas de 20 kg:</p>
+                        <p class="highlight">${bolsas} <span class="unit">bolsas</span></p>
+                    </div>
+                    <div class="result-row">
+                        <p class="result-label">Saldo restante:</p>
+                        <p class="highlight">${saldo} <span class="unit">kg</span></p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
